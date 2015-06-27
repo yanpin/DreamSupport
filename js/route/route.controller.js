@@ -1,17 +1,27 @@
-app.controller('RouteCtrl', function ($scope, $log) {
-    $scope.travel = {
-        name: '放棄的夢被打碎'
-    };
+app.controller('RouteCtrl', function ($scope, $log, Travel, $routeParams) {
+    $scope.travelId ;
+    Travel.getList({user_id: '123'}).then(function (travels) {
+        $scope.travels = travels;      
+        $scope.i = $scope.travels.length - 1;
+        //抓最後一筆obj
+        $scope.travelId = $scope.travels[$scope.i].id;
+        console.log($scope.travelId);
+        $scope.travel  = { 
+            name:$scope.travels[$scope.i].name
+        }
+    })
+    
+
     $scope.locations = [{
-            name: '天龍國',
-            remark: '墨鏡是本體',
-        }, {
-            name: '民主聖地',
-            remark: 'U質選擇'
-        }, {
-            name: '高譚市',
-            remark: '小丑',
-        }];
+        name: '天龍國',
+        remark: '墨鏡是本體',
+    }, {
+        name: '民主聖地',
+        remark: 'U質選擇'
+    }, {
+        name: '高譚市',
+        remark: '小丑',
+    }];
 
     $scope.weather = {
         message: '有午後雷陣雨'
@@ -19,7 +29,7 @@ app.controller('RouteCtrl', function ($scope, $log) {
 
     $scope.createType = 'start';
 
-    $scope.createStart = function () {
+    $scope.createStart = function() {
         $scope.input_toolbar = {
             title: '建立起點',
             name: '起點地址',
@@ -28,7 +38,7 @@ app.controller('RouteCtrl', function ($scope, $log) {
         $scope.createMode = true;
     }
 
-    $scope.createMidway = function () {
+    $scope.createMidway = function() {
         $scope.input_toolbar = {
             title: '建立中繼點',
             name: '中繼點地址',
@@ -37,7 +47,7 @@ app.controller('RouteCtrl', function ($scope, $log) {
         $scope.createType = 'midway';
         $scope.createMode = true;
     }
-    $scope.createEnd = function () {
+    $scope.createEnd = function() {
         $scope.input_toolbar = {
             title: '建立終點',
             name: '終點地址',
@@ -47,77 +57,118 @@ app.controller('RouteCtrl', function ($scope, $log) {
         $scope.createMode = true;
     }
 
-    $scope.createLocation = function (local) {
+    $scope.createLocation = function(local) {
+        //console.log(local);
         local.type = $scope.createType;
         $scope.createType = 'other';
         $scope.createMode = false;
-        $scope.local = {};
+        //$scope.local = {};
+
         $scope.locations.push(local);
     }
 
-     $scope.randomMarkers = [];
-    $scope.options = {scrollwheel: false};
+    $scope.randomMarkers = [];
+    $scope.options = {
+        scrollwheel: false
+    };
 
+
+    var geocoder = new google.maps.Geocoder();
     //基礎位置設定
     $scope.map = {
-      center: {
-        latitude: 23.60451,
-        longitude: 120.1010
-      },
-      zoom: 8,
-    };
-
-    $scope.array = {
-      latitude: 23.8911837121222, 
-      longitude: 120.94801959289578, 
-      title: "m0", 
-      id: 0,
-      icon:'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin_star|A|FF0000|000000'
-    }
-    //標籤設定
-    var GetMarker = function() {
-      //這裡寫post拿Obj
-      console.log($scope.array)
-      return $scope.array;
+        center: {
+            latitude: 23.60451,
+            longitude: 120.1010
+        },
+        zoom: 8,
     };
     
-    //處理json標記用
-    $scope.$watch(function() {
-      return $scope.map.bounds;
-    }, function() {
-      var markers = [];    
-
-      console.log(markers.push(GetMarker($scope.map.bounds)))
-      $scope.randomMarkers = markers;
-      //回傳到hmtl的最終資料
-    }, true);
-    $scope.array123 = {
-          latitude: 27.8911837121222, 
-          longitude: 120.94801959289578, 
-          title: "m0", 
-          id: 0,
-          icon:'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin_star|A|FF0000|000000'
+    $scope.uploaddata = {
+        name:       '',
+        order:      '',
+        remark:     '',
+        lat:        '',
+        lng:        '',
+        icon:       '',
+        type:       '',
+        travel_id:  ''
     }
-    
-    var events = {
-      places_changed: function (searchBox) {
-        var place = searchBox.getPlaces();
+    $scope.uploaddata
+    $scope.getLatLng = function(address) {
+        geocoder.geocode({
+            'address': address
 
-        // 移動位置
-        $scope.map = {
-          "center": {
-            "latitude": place[0].geometry.location.lat(),
-            "longitude": place[0].geometry.location.lng()
-          },
-          "zoom": 8
-        };
-        console.log($scope.array123);
-        var markers = [];    
-        markers.push($scope.array123);
-        $scope.randomMarkers = markers;
-      }
+        }, function(results, status) {
+
+            if (status == google.maps.GeocoderStatus.OK) {
+                $scope.icon ;
+                $scope.latlng = results[0].geometry.location;
+                $scope.map = {
+                    center: {
+                        latitude: results[0].geometry.location.A,
+                        longitude: results[0].geometry.location.F
+                    }
+                };
+                $scope.address = {
+                    latitude: results[0].geometry.location.A,
+                    longitude: results[0].geometry.location.F,
+                    title: address,
+                    id: 1,    
+                }
+                console.log(address);
+                if($scope.createType == 'start'){    
+                    $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|S|E72323|FFFFFF'
+                    $scope.address = {
+                        latitude: results[0].geometry.location.A,
+                        longitude: results[0].geometry.location.F,
+                        title: address,
+                        id: 0, 
+                        icon: $scope.icon
+                    }
+                }else if($scope.createType == 'midway'){
+                   $scope.address = {
+                        latitude: results[0].geometry.location.A,
+                        longitude: results[0].geometry.location.F,
+                        title: address,
+                        id: 1,
+                        icon: 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
+                    }
+
+                }else if($scope.createType == 'end'){
+                    $scope.address = {
+                        latitude: results[0].geometry.location.A,
+                        longitude: results[0].geometry.location.F,
+                        title: address,
+                        id: 2, 
+                        icon: 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|E|f0ad4e|FFFFFF'
+                    }
+                }
+
+                $scope.uploaddata = {
+                    name:       address,
+                    order:      '',
+                    remark:     '',
+                    lat:        results[0].geometry.location.A,
+                    lng:        results[0].geometry.location.F,
+                    icon:       '',
+                    type:       $scope.createType,
+                    travel_id:  $scope.travelId 
+                }
+                console.log($scope.uploaddata);
+
+                console.log();
+                var markers = [];
+                markers.push($scope.address);
+                $scope.randomMarkers = markers;
+                
+            } else {
+                console.log('Geocode was not successful for the following reason: ' + status);
+            }
+        });
     }
-    $scope.searchbox = { template:'searchbox.tpl.html', events:events};
 
-    
+    $scope.createLocation = function(){
+        alert('aaaa');
+    }
+
 })

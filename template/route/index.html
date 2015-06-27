@@ -1,36 +1,32 @@
-<style type="text/css">
-    .angular-google-map-container { height: 643px; }
-</style>
- <div class="aa bg" id="map_canvas" >
+ <div class="bg" id="map_canvas" >
      <ui-gmap-google-map 
         center="map.center" 
         zoom="map.zoom" 
         draggable="true" 
         options="options" 
         bounds="map.bounds"
+        style = 'height: 100%'
     >
-        <script type="text/ng-template" id="searchbox.tpl.html">
-            <input type="text" placeholder="Search Box" autofocus>
-        </script>
-   
-        <ui-gmap-search-box template="searchbox.template" events="searchbox.events">
+        <ui-gmap-search-box template="searchbox.template" events="searchbox.events" position='RIGHT_TOP'>
         </ui-gmap-search-box>
         <ui-gmap-markers models="randomMarkers" coords="'self'" icon="'icon'">
         </ui-gmap-markers>
     </ui-gmap-google-map>
  </div>
 <div class="slidebar">
-    <div class="title">{{ travel.name }}</div>
-    <ul class="nav nav-pills nav-stacked">
-        <li ng-repeat="location in locations" popover-template="'template/route/popover.html'" popover-placement="right">
-            {{ location.name }}
-            <div class="pull-right">
-                <span class="wi wi-day-lightning"></span>
-            </div>
-        </li>
-        <script>
-        </script>
-    </ul>
+    <!--<div ng-repeat="travel in travels">-->
+        <div class="title">{{ travel.name }}</div>
+        <ul class="nav nav-pills nav-stacked">
+            <li ng-repeat="location in locations" popover-template="'template/route/popover.html'" popover-placement="right">
+                {{ location.name }}
+                <div class="pull-right">
+                    <span class="wi wi-day-lightning"></span>
+                </div>
+            </li>
+            <script>
+            </script>
+        </ul>
+    <!--</div>-->
 </div>
 
 <div class="toolbar animate" ng-hide="createMode">
@@ -41,8 +37,8 @@
 <div class="animate input-toolbar form-group" ng-hide="!createMode">
     <h3>{{ input_toolbar.title }}</h3>
     <form ng-submit="createLocation(local)">
-        <div class="form-group">
-            <input type="text" class="form-control" ng-model="local.name" placeholder="{{ input_toolbar.name }}"/>
+        <div class="form-group" id="search-box-google-map">
+            <input type="text" class="form-control" ng-blur="getLatLng(local.name)" ng-model="local.name" placeholder="{{ input_toolbar.name }}"/>
         </div>
         <div class="form-group">
             <textarea placeholder="{{ input_toolbar.body }}" ng-model="local.remark" class="form-control"></textarea>
@@ -53,3 +49,4 @@
         </div>
     </form>
 </div>
+

@@ -1,5 +1,5 @@
 var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular', 'ngCookies', 'ui.bootstrap', 'uiGmapgoogle-maps'])
-    .constant('API_DOMAIN', 'http://ds.com/')
+    .constant('API_DOMAIN', 'http://dream-support.ddns.net/api/')
     .config(function ($routeProvider, RestangularProvider, API_DOMAIN) {
         RestangularProvider.setBaseUrl(API_DOMAIN);
         $routeProvider
