@@ -1,34 +1,38 @@
 app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routeParams) {
-    $scope.travelId ;
-    
 
-    Travel.getList({user_id: '123'}).then(function (travels) {
-        $scope.travels = travels;      
-        $scope.i = $scope.travels.length - 1;
-        //抓最後一筆obj
-        $scope.travelId = $scope.travels[$scope.i].id;
-        //console.log($scope.travelId);
-        $scope.travel  = { 
-            name:$scope.travels[$scope.i].name
-        }
+    Travel.one($routeParams.travel_id).get().then(function (travel) {
+        $scope.travel = travel;
+        //console.log(travel);
+        Locations.getList({travel_id: $routeParams.travel_id}).then(function (locations) {
+            $scope.locations = locations;
+            
+            for(i=0;i<=$scope.locations.length-1;i++){
+                console.log($scope.locations[i].type);
+                if($scope.locations[i].type == 'start'){    
+                    $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|S|E72323|FFFFFF'
+                }else if($scope.locations[i].type == 'midway'){
+                    $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
+                }else if($scope.locations[i].type == 'end'){
+                    $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|E|f0ad4e|FFFFFF'
+                    
+                }
+
+                $scope.address = {
+                    latitude: $scope.locations[i].lat,
+                    longitude: $scope.locations[i].lng,
+                    title: $scope.locations[i].name,
+                    id: $scope.locations[i].id,
+                    icon: $scope.icon
+                }    
+                console.log($scope.address);
+
+                $scope.randomMarkers.push($scope.address);
+            }
+            
+        })
+
     })
-    Locations.getList({travel_id: $scope.travelId}).then(function (locations) {
-        $scope.locations = locations;
-        console.log($scope.travelId, Locations);
-    })
     
-
-    $scope.locations = [{
-        name: '天龍國',
-        remark: '墨鏡是本體',
-    }, {
-        name: '民主聖地',
-        remark: 'U質選擇'
-    }, {
-        name: '高譚市',
-        remark: '小丑',
-    }];
-
     $scope.weather = {
         message: '有午後雷陣雨'
     };
@@ -73,7 +77,7 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
 
         local.lat = $scope.latlng.A;
         local.lng = $scope.latlng.F;
-        local.travel_id = $scope.travelId;
+        local.travel_id = $routeParams.travel_id;
         delete local.$$hashKey;
         
         console.log(local);
@@ -120,17 +124,13 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                     title: address,
                     id: 1,    
                 }
-                console.log(address);
+                
                 if($scope.createType == 'start'){    
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|S|E72323|FFFFFF'
-                    
-                }else if($scope.createType == 'midway'){
+                } else if($scope.createType == 'midway'){
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
-                    
-                }else if($scope.createType == 'end'){
-
+                } else if($scope.createType == 'end'){
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|E|f0ad4e|FFFFFF'
-                    
                 }
                 $scope.address = {
                     latitude: results[0].geometry.location.A,
@@ -138,23 +138,9 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                     title: address,
                     id: 0, 
                     icon: $scope.icon
-                }
-                $scope.uploaddata = {
-                    name:       address,
-                    order:      '',
-                    remark:     '',
-                    lat:        results[0].geometry.location.A,
-                    lng:        results[0].geometry.location.F,
-                    icon:       '',
-                    type:       $scope.createType,
-                    travel_id:  $scope.travelId 
-                }
+                }    
                 
-                
-                var markers = [];
-                markers.push($scope.address);
-                $scope.randomMarkers = markers;
-                
+                $scope.randomMarkers.push($scope.address);
             } else {
                 console.log('Geocode was not successful for the following reason: ' + status);
             }
