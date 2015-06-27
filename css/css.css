@@ -8,7 +8,7 @@ body{
 　	overflow-x: hidden;
 }
 
-.bg {
+.Home.bg {
 	background: url(../img/taiwan_map.png) no-repeat;
 	background-size: 100% 100%;
 	height: 100%;
