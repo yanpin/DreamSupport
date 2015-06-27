@@ -1,4 +1,4 @@
-var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular', 'ngCookies', 'ui.bootstrap'])
+var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular', 'ngCookies', 'ui.bootstrap', 'uiGmapgoogle-maps'])
     .constant('API_DOMAIN', 'http://ds.com/')
     .config(function ($routeProvider, RestangularProvider, API_DOMAIN) {
         RestangularProvider.setBaseUrl(API_DOMAIN);
@@ -15,4 +15,10 @@ var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular',
             	controller: 'RouteCtrl'
             })
             .otherwise('/');
-    });
+    })
+    .config(function (uiGmapGoogleMapApiProvider) {
+        uiGmapGoogleMapApiProvider.configure({
+            v: '3.17',
+             libraries: 'places'
+         });
+     })

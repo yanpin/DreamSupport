@@ -1,4 +1,24 @@
-<div class="aa bg"></div>
+<style type="text/css">
+    .angular-google-map-container { height: 643px; }
+</style>
+ <div class="aa bg" id="map_canvas" >
+     <ui-gmap-google-map 
+        center="map.center" 
+        zoom="map.zoom" 
+        draggable="true" 
+        options="options" 
+        bounds="map.bounds"
+    >
+        <script type="text/ng-template" id="searchbox.tpl.html">
+            <input type="text" placeholder="Search Box" autofocus>
+        </script>
+   
+        <ui-gmap-search-box template="searchbox.template" events="searchbox.events">
+        </ui-gmap-search-box>
+        <ui-gmap-markers models="randomMarkers" coords="'self'" icon="'icon'">
+        </ui-gmap-markers>
+    </ui-gmap-google-map>
+ </div>
 <div class="slidebar">
     <div class="title">{{ travel.name }}</div>
     <ul class="nav nav-pills nav-stacked">
