@@ -1,53 +1,35 @@
-<<<<<<< HEAD
-<div class="bg"></div>
-<div class="route">
-	<div class="pull-left">
-		<nav >
-		</nav>
-	</div>
-	<div class="pull-right">
-		<nav class='route-navbar'>
-			<div class="Menu Menu-begin pull-right">
-				<p>開始起點</p>
-			</div>
-			<div class="Menu Menu-midway pull-right">
-				<p>中繼點</p>
-			</div>
-			<div class="Menu Menu-end pull-right">
-				<p>結束終點</p>
-			</div>
-
-		</nav> 
-	</div>
+<div class="aa bg"></div>
+<div class="slidebar">
+    <div class="title">{{ travel.name }}</div>
+    <ul class="nav nav-pills nav-stacked">
+        <li ng-repeat="location in locations" popover-template="'template/route/popover.html'" popover-placement="right">
+            {{ location.name }}
+            <div class="pull-right">
+                <span class="wi wi-day-lightning"></span>
+            </div>
+        </li>
+        <script>
+        </script>
+    </ul>
 </div>
- <!--
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    Brand and toggle get grouped for better mobile display 
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Brand</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-       
-        <li><a href="#">Link</a></li>
-        
-      </ul>
-      
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-      </ul>
-    </div> /.navbar-collapse
-  </div> /.container-fluid 
-</nav>-->
-=======
-<h1>Hello, I'm route</h1>
->>>>>>> decbe4fe80609818689e1cec4c900f6b0f0af9ed
+<div class="toolbar animate" ng-hide="createMode">
+    <div ng-show="createType == 'start'" ng-click="createStart()" class="btn btn-block btn-danger">設定起點</div>
+    <div ng-show="createType != 'start'" ng-click="createMidway()" class="btn btn-block btn-success">設定中繼點</div>
+    <div ng-show="createType != 'start'" ng-click="createEnd()" class="btn btn-block btn-warning">設定終點</div>
+</div>
+<div class="animate input-toolbar form-group" ng-hide="!createMode">
+    <h3>{{ input_toolbar.title }}</h3>
+    <form ng-submit="createLocation(local)">
+        <div class="form-group">
+            <input type="text" class="form-control" ng-model="local.name" placeholder="{{ input_toolbar.name }}"/>
+        </div>
+        <div class="form-group">
+            <textarea placeholder="{{ input_toolbar.body }}" ng-model="local.remark" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">新增</button>
+            <a class="btn btn-link" ng-click="createMode=false">取消</a>
+        </div>
+    </form>
+</div>

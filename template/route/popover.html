@@ -1,0 +1,8 @@
+<div>
+    <div class="icons">
+        <a class="glyphicon glyphicon-edit" ng-class="{ active: location.popover.active == 'remark' || !location.popover.active }" title="備註" ng-click="location.popover.active = 'remark'"></a>
+        <a class="wi wi-day-lightning" ng-class="{ active: location.popover.active == 'weather' }" title="天氣" ng-click="location.popover.active = 'weather'"></a>
+    </div>
+    <p ng-show="location.popover.active == 'remark' || !location.popover.active">{{ location.remark }}</p>
+    <p ng-show="location.popover.active == 'weather'">{{ weather.message }}</p>
+</div>

@@ -1,70 +1,101 @@
-a{text-decoration:none}
-.route{
+.aa.bg {
+	background-position: 120px;
+}
+
+.toolbar, .input-toolbar {
 	position: absolute;
-	z-index: 1;
-	width: 100%;
+	right: 0;
+	top: 100px;
+}
+
+.toolbar {
+	width: 150px;
+}
+
+.toolbar .btn {
+	border-radius: 0;
+	border-width: 2px;
+	padding-right: 30px;
+	border-right: none;
+	text-align: left;
+	font-size: 18px;
+	rigth: 0px;
+}
+
+.slidebar {
+	width: 300px;
 	height: 100%;
-
-}
-.route > .pull-left{
-	width: 50%;
-	
-}
-.route > .pull-right{
-	width: 50%;
-	
+	background-color: #333333;
+	position: absolute;
+	border-right: 3px solid #222222;
 }
 
-.route-navbar{
-	
+.slidebar .nav {
+	color: white;
 }
 
-.route-navbar > .Menu{
-	
-	margin-top: 20px;
-	font-family: Microsoft JhengHei;
-	margin-right: 0px;
-	margin-left: 80%;
-	padding: 12px;
-	width: 20%;
-}
-.route-navbar > .Menu-begin{
+.slidebar .nav li {
+	padding: 5px 10px;
 	font-size: 18px;
-	background-image: -webkit-linear-gradient(top,#5bc0de 0,#2aabd2 100%);
-	background-image: -o-linear-gradient(top,#5bc0de 0,#2aabd2 100%);
-	background-image: -webkit-gradient(linear,left top,left bottom,from(#5bc0de),to(#2aabd2));
-	background-image: linear-gradient(to bottom,#5bc0de 0,#2aabd2 100%);	
-	font-family: Microsoft JhengHei;	
-	
-	color: #000000;
-	border: 1px solid transparent;
-
-	
-}
-.Menu-begin > p{
-	margin-bottom: 0px;
-
-	color: #FFFFFF;
 }
 
-.route-navbar > .Menu-midway{
+.slidebar .nav li:hover {
+	background: #222222;
+}
+
+.title {
+	padding: 10px 10px;
+	margin: 10px 0;
+	color: white;
+	font-size: 30px;
+	border-bottom: 1px solid #fff;
+}
+
+.animate.ng-hide-add {
+	transition:all linear 1.2s;
+	display:block!important;
+}
+
+.animate.ng-hide-remove {
+	transition:all linear .46s;
+	transition-delay: .2s;
+	display:block!important;
+}
+
+.animate.ng-hide-add.ng-hide-add-active,
+.animate.ng-hide-remove {
+	right: -100%;
+	/*opacity: 0;*/
+}
+
+.animate.ng-hide-add,
+.animate.ng-hide-remove.ng-hide-remove-active {
+	/*opacity:1;*/
+	right: 0px;
+	/*width: 150px;*/
+}
+
+.input-toolbar {
+	padding: 10px;
+	width: 350px;
+	/*right: -100%;*/
+	background: #fff;
+	box-shadow: 0px 0px 2px #555;
+}
+
+.popover {
+	color: #000;
+	width: 500px;
+}
+
+.popover .icons {
+	font-size: 22px;
+}
+
+.popover .icons .active {
+	color: #CF4440;
+}
+
+.popover p {
 	font-size: 18px;
-	background-color: #e0e0e0;
-  	background-position: 0 -15px;
-	
-	
-}
-.Menu-midway > p{
-	margin-bottom: 0px;
-    color: #333;
-}
-.route-navbar > .Menu-end{
-	font-size: 18px;
-	background-color: #265a88;
-  	background-position: 0 -15px;
-}
-.Menu-end > p{
-	margin-bottom: 0px;
-
-    color: #FFFFFF;
 }

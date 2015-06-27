@@ -1,4 +1,4 @@
-var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular', 'ngCookies'])
+var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular', 'ngCookies', 'ui.bootstrap'])
     .constant('API_DOMAIN', 'http://ds.com/')
     .config(function ($routeProvider, RestangularProvider, API_DOMAIN) {
         RestangularProvider.setBaseUrl(API_DOMAIN);
@@ -12,8 +12,7 @@ var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular',
             })
             .when('/route', {
                 templateUrl: 'template/route/index.html',
-            	controller:""
+            	controller: 'RouteCtrl'
             })
-
             .otherwise('/');
     });
