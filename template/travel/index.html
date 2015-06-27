@@ -1,0 +1,29 @@
+<div class="Home bg"></div>
+<div class="Home">
+    <div class="row">
+        <div class="vertical-center">
+            <div class="modal show">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">你的行程</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-striped">
+                                <tr ng-repeat="travel in travels">
+                                    <td>
+                                        <a href="#/route/{{ travel.id }}">{{ travel.name }}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#/travel/create" class="btn btn-block btn-primary">新增行程</a>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</div>
