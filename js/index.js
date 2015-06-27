@@ -6,8 +6,13 @@ var app = angular.module('DreamSupport', ['ngRoute', 'ngAnimate', 'restangular']
             .when('/', {
                 templateUrl: 'template/index.shady.html',
             })
-            .when('/login', {
-                templateUrl: 'template/index.login.html',
+            .when('/travel/create', {
+                templateUrl: 'template/travel/create.html',
             })
+            .when('/route', {
+                templateUrl: 'template/route/index.html',
+            	controller:""
+            })
+
             .otherwise('/');
     });
