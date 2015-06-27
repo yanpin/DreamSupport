@@ -2,32 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="581dc369-6dca-4f15-b487-a2f4cf8361dd" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/template/route/popover.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/route/route.controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/img/travel-bg.png" afterPath="$PROJECT_DIR$/img/travel-bg.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/.bower.json" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/.bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/README.md" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/angular-cookies.js" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/angular-cookies.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/angular-cookies.min.js.map" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/angular-cookies.min.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/angular-cookies.min.js" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/angular-cookies.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/bower.json" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/template/travel/create.html" afterPath="$PROJECT_DIR$/template/travel/create.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ds-web.iml" afterPath="$PROJECT_DIR$/.idea/ds-web.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/global.css" afterPath="$PROJECT_DIR$/css/global.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/index.css" afterPath="$PROJECT_DIR$/css/index.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/template/route/index.html" afterPath="$PROJECT_DIR$/template/route/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/index.js" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/index.js" afterPath="$PROJECT_DIR$/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/angular-cookies/package.json" afterPath="$PROJECT_DIR$/bower_components/angular-cookies/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/route.css" afterPath="$PROJECT_DIR$/css/route.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/travel/travel.controller.js" afterPath="$PROJECT_DIR$/js/travel/travel.controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/travel.css" afterPath="$PROJECT_DIR$/css/travel.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/travel/travel.factory.js" afterPath="$PROJECT_DIR$/js/travel/travel.factory.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ds-web.iws" />
