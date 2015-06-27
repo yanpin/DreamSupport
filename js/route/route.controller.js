@@ -1,14 +1,20 @@
-app.controller('RouteCtrl', function ($scope, $log, Travel, $routeParams) {
+app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routeParams) {
     $scope.travelId ;
+    
+
     Travel.getList({user_id: '123'}).then(function (travels) {
         $scope.travels = travels;      
         $scope.i = $scope.travels.length - 1;
         //抓最後一筆obj
         $scope.travelId = $scope.travels[$scope.i].id;
-        console.log($scope.travelId);
+        //console.log($scope.travelId);
         $scope.travel  = { 
             name:$scope.travels[$scope.i].name
         }
+    })
+    Locations.getList({travel_id: $scope.travelId}).then(function (locations) {
+        $scope.locations = locations;
+        console.log($scope.travelId, Locations);
     })
     
 
@@ -58,13 +64,21 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, $routeParams) {
     }
 
     $scope.createLocation = function(local) {
-        //console.log(local);
+      
         local.type = $scope.createType;
         $scope.createType = 'other';
         $scope.createMode = false;
-        //$scope.local = {};
-
+        local.order = $scope.locations.length;
         $scope.locations.push(local);
+
+        local.lat = $scope.latlng.A;
+        local.lng = $scope.latlng.F;
+        local.travel_id = $scope.travelId;
+        delete local.$$hashKey;
+        
+        console.log(local);
+        Locations.post(local);
+
     }
 
     $scope.randomMarkers = [];
@@ -83,16 +97,7 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, $routeParams) {
         zoom: 8,
     };
     
-    $scope.uploaddata = {
-        name:       '',
-        order:      '',
-        remark:     '',
-        lat:        '',
-        lng:        '',
-        icon:       '',
-        type:       '',
-        travel_id:  ''
-    }
+    
     $scope.uploaddata
     $scope.getLatLng = function(address) {
         geocoder.geocode({
@@ -118,32 +123,22 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, $routeParams) {
                 console.log(address);
                 if($scope.createType == 'start'){    
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|S|E72323|FFFFFF'
-                    $scope.address = {
-                        latitude: results[0].geometry.location.A,
-                        longitude: results[0].geometry.location.F,
-                        title: address,
-                        id: 0, 
-                        icon: $scope.icon
-                    }
+                    
                 }else if($scope.createType == 'midway'){
-                   $scope.address = {
-                        latitude: results[0].geometry.location.A,
-                        longitude: results[0].geometry.location.F,
-                        title: address,
-                        id: 1,
-                        icon: 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
-                    }
-
+                    $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
+                    
                 }else if($scope.createType == 'end'){
-                    $scope.address = {
-                        latitude: results[0].geometry.location.A,
-                        longitude: results[0].geometry.location.F,
-                        title: address,
-                        id: 2, 
-                        icon: 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|E|f0ad4e|FFFFFF'
-                    }
-                }
 
+                    $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|E|f0ad4e|FFFFFF'
+                    
+                }
+                $scope.address = {
+                    latitude: results[0].geometry.location.A,
+                    longitude: results[0].geometry.location.F,
+                    title: address,
+                    id: 0, 
+                    icon: $scope.icon
+                }
                 $scope.uploaddata = {
                     name:       address,
                     order:      '',
@@ -154,9 +149,8 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, $routeParams) {
                     type:       $scope.createType,
                     travel_id:  $scope.travelId 
                 }
-                console.log($scope.uploaddata);
-
-                console.log();
+                
+                
                 var markers = [];
                 markers.push($scope.address);
                 $scope.randomMarkers = markers;
@@ -167,8 +161,6 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, $routeParams) {
         });
     }
 
-    $scope.createLocation = function(){
-        alert('aaaa');
-    }
+   
 
 })
