@@ -1,0 +1,31 @@
+<div class="travel bg">
+    <div class="container">
+        <div class="col-sm-offset-2 col-sm-8">
+            <h1>建立屬於你的旅程</h1>
+            <hr/>
+            <h2>為你的旅途命名</h2>
+
+            <form ng-submit="create(travel)">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="travel.name" placeholder="YanPin的旅行"/>
+                </div>
+                <h2>為你的旅途立下目標</h2>
+                <div class="form-group">
+                    <textarea class="form-control" rows="15" ng-model="travel.goal" placeholder="這個旅途的目標"></textarea>
+                </div>
+                <!--<h2>邀請你的朋友加入</h2>-->
+                <!--<div class="form-group">-->
+                    <!--<select class="form-control" multiple>-->
+                        <!--<option value="">obov</option>-->
+                        <!--<option value="">XXXXGAY</option>-->
+                        <!--<option value="">seabox</option>-->
+                        <!--<option value="">boyo</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">GO! 開始規劃行程 》</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
