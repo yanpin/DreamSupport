@@ -6,14 +6,18 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">你的行程</h4>
-                            <button ng-click="logout()">logout</button>
+                            <h4 class="modal-title text-left">{{ user_name }}的行程
+                                <a class="btn pull-right btn-link" ng-click="signout()">logout</a>
+                            </h4>
                         </div>
                         <div class="modal-body">
                             <table class="table table-striped">
                                 <tr ng-repeat="travel in travels">
-                                    <td>
+                                    <td class="text-left">
                                         <a href="#/route/{{ travel.id }}">{{ travel.name }}</a>
+                                    </td>
+                                    <td width="30px">
+                                        <a ng-click="remove(travel)" class="glyphicon glyphicon-remove danger"></a>
                                     </td>
                                 </tr>
                             </table>

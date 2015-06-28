@@ -96,18 +96,19 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
     }
 
     $scope.create_button_disable = false;
-    $scope.createLocation = function(local) {
+
+    $scope.createLocation = function(createLocal) {
         $scope.create_button_disable = true;
-        local.type = $scope.createType;
-        local.order = $scope.locations.length;
+        createLocal.type = $scope.createType;
+        createLocal.order = $scope.locations.length;
 
-        local.lat = $scope.latlng.A;
-        local.lng = $scope.latlng.F;
-        local.travel_id = $routeParams.travel_id;
-        delete local.$$hashKey;
+        createLocal.lat = $scope.latlng.A;
+        createLocal.lng = $scope.latlng.F;
+        createLocal.travel_id = $routeParams.travel_id;
+        delete createLocal.$$hashKey;
 
-        Locations.post(local).then(function(response) {
-            $scope.locations.push(local);
+        Locations.post(createLocal).then(function(response) {
+            $scope.locations.push(createLocal);
             $scope.createType = 'midway';
             $scope.createMode = false;
             $scope.create_button_disable = false;
@@ -122,14 +123,6 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
 
 
     var geocoder = new google.maps.Geocoder();
-    //基礎位置設定
-    //$scope.map = {
-    //    center: {
-    //        latitude: 23.60451,
-    //        longitude: 120.1010
-    //    }
-    //    zoom: 8,
-    //};
 
     var setMapCenter = function (lat, lng, zoom) {
         $scope.map = {
@@ -157,10 +150,10 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                     latitude: results[0].geometry.location.A,
                     longitude: results[0].geometry.location.F,
                     title: address,
-                    id: 1,    
+                    id: 1,
                 }
-                
-                if($scope.createType == 'start'){    
+
+                if($scope.createType == 'start'){
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|S|E72323|FFFFFF'
                 } else if($scope.createType == 'midway'){
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
