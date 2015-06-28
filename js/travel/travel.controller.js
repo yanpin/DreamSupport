@@ -1,5 +1,4 @@
-app.controller('TravelCtrl', function ($scope, Travel, $cookies, $location) {
-    $cookies.put('user_id', '123');
+app.controller('TravelCtrl', function ($scope, Travel, $cookies, $location, $facebook) {
 
     Travel.getList({ user_id: $cookies.get('user_id') }).then(function (travels) {
         $scope.travels = travels;
@@ -14,5 +13,9 @@ app.controller('TravelCtrl', function ($scope, Travel, $cookies, $location) {
                 $location.path('/route/' + response.id);
             }
         })
+    }
+
+    $scope.logout = function () {
+        $facebook.logout();
     }
 })

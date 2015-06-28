@@ -1,8 +1,28 @@
 <div>
     <div class="icons">
-        <a class="glyphicon glyphicon-edit" ng-class="{ active: location.popover.active == 'remark' || !location.popover.active }" title="備註" ng-click="location.popover.active = 'remark'"></a>
-        <a class="wi wi-day-lightning" ng-class="{ active: location.popover.active == 'weather' }" title="天氣" ng-click="location.popover.active = 'weather'"></a>
+        <a ng-class="{ active: location.popover.active == 'remark' || !location.popover.active }" title="備註" ng-click="location.popover.active = 'remark'"><span class="glyphicon glyphicon-edit"></span>備註</a>
+        <a ng-class="{ active: location.popover.active == 'weather' }" title="天氣" ng-click="location.popover.active = 'weather'"><span class="wi wi-day-lightning"></span>未來天氣</a>
+        <a ng-class="{ active: location.popover.active == 'hospital' }" title="醫院" ng-click="location.popover.active = 'hospital'"><span class="glyphicon glyphicon-plus"></span>附近醫院</a>
     </div>
-    <p ng-show="location.popover.active == 'remark' || !location.popover.active">{{ location.remark }}</p>
-    <p ng-show="location.popover.active == 'weather'">{{ weather.message }}</p>
+    <hr/>
+    <div class="p" ng-show="location.popover.active == 'remark' || !location.popover.active">{{ location.remark }}</div>
+    <div class="p" ng-show="location.popover.active == 'weather'" class="weather-list">
+        <div class="p" ng-repeat="weather in location.weathers">
+            <span class="wi {{ weathersIcon[weather.parameter.parameterName] }}"></span>
+            {{ weather.startTime }} ~
+            {{ weather.endTime }}
+            {{ weather.parameter.parameterName }}
+        </div>
+        <div class="p" ng-hide="location.weathers.length && !search">沒有該地區的天氣資訊</div>
+    </div>
+    <div class="p" ng-show="location.popover.active == 'hospital'">
+        <div class="p" ng-repeat="hospital in location.hospitals">
+            {{ hospital.name }}
+            <ul>
+                <li>電話：{{ hospital.phone }}</li>
+                <li>地址：{{ hospital.address }}</li>
+            </ul>
+        </div>
+        <li ng-hide="location.hospitals.length && !search">附近沒有醫院</li>
+    </div>
 </div>

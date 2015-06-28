@@ -1,12 +1,14 @@
 app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routeParams) {
 
+    $scope.wait = true;
+
     Travel.one($routeParams.travel_id).get().then(function (travel) {
         $scope.travel = travel;
-        //console.log(travel);
         Locations.getList({travel_id: $routeParams.travel_id}).then(function (locations) {
             $scope.locations = locations;
-            
-            for(i=0;i<=$scope.locations.length-1;i++){
+            $scope.wait = false;
+
+            for(var i = 0; i <= $scope.locations.length - 1; i++){
                 console.log($scope.locations[i].type);
                 if($scope.locations[i].type == 'start'){    
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|S|E72323|FFFFFF'
@@ -14,7 +16,6 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
                 }else if($scope.locations[i].type == 'end'){
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|E|f0ad4e|FFFFFF'
-                    
                 }
 
                 $scope.address = {
@@ -23,18 +24,45 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                     title: $scope.locations[i].name,
                     id: $scope.locations[i].id,
                     icon: $scope.icon
-                }    
-                console.log($scope.address);
+                }
 
+                if ($scope.locations.length != 0) {
+                    $scope.createType = 'midway';
+                }
                 $scope.randomMarkers.push($scope.address);
             }
-            
         })
-
     })
-    
-    $scope.weather = {
-        message: '有午後雷陣雨'
+
+    $scope.weathersIcon = {
+        '多雲短暫陣雨': 'wi-hail',
+        '晴時多雲': 'wi-day-cloudy',
+        '晴午後短暫雷陣雨': 'wi-day-rain-wind'
+    };
+    $scope.loadInformation = function (location) {
+        $scope.search = true;
+        Locations.one(location.id).get().then(function (response) {
+            location.weathers = response.weathers.weatherElement;
+            for (var i = 0; i < location.weathers.length; i++) {
+                var weather = location.weathers[i];
+                if (weather.elementName == 'Wx') {
+                    location.weathers = weather.time;
+                    break;
+                }
+            }
+            console.log(location.weathers);
+            for (var i = 0; i < location.weathers.length; i++) {
+                var weather = location.weathers[i];
+                var time = new Date(weather.startTime);
+                weather.startTime = parseInt(time.getMonth() + 1) + '/' + time.getDate();
+                var time = new Date(weather.endTime);
+                weather.endTime = parseInt(time.getMonth() + 1) + '/' + time.getDate();
+                location.weathers[i] = weather;
+            }
+            location.hospitals = response.hospitals;
+            $scope.search = false;
+            setMapCenter(location.lat, location.lng, 10);
+        });
     };
 
     $scope.createType = 'start';
@@ -67,21 +95,23 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
         $scope.createMode = true;
     }
 
+    $scope.create_button_disable = false;
     $scope.createLocation = function(local) {
-      
+        $scope.create_button_disable = true;
         local.type = $scope.createType;
-        $scope.createType = 'other';
-        $scope.createMode = false;
         local.order = $scope.locations.length;
-        $scope.locations.push(local);
 
         local.lat = $scope.latlng.A;
         local.lng = $scope.latlng.F;
         local.travel_id = $routeParams.travel_id;
         delete local.$$hashKey;
-        
-        console.log(local);
-        Locations.post(local);
+
+        Locations.post(local).then(function(response) {
+            $scope.locations.push(local);
+            $scope.createType = 'midway';
+            $scope.createMode = false;
+            $scope.create_button_disable = false;
+        });
 
     }
 
@@ -93,16 +123,26 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
 
     var geocoder = new google.maps.Geocoder();
     //基礎位置設定
-    $scope.map = {
-        center: {
-            latitude: 23.60451,
-            longitude: 120.1010
-        },
-        zoom: 8,
-    };
-    
-    
-    $scope.uploaddata
+    //$scope.map = {
+    //    center: {
+    //        latitude: 23.60451,
+    //        longitude: 120.1010
+    //    }
+    //    zoom: 8,
+    //};
+
+    var setMapCenter = function (lat, lng, zoom) {
+        $scope.map = {
+            center: {
+                latitude: lat,
+                longitude: lng
+            },
+            zoom: zoom,
+        };
+    }
+    setMapCenter(23.60451, 120.1010, 8);
+
+
     $scope.getLatLng = function(address) {
         geocoder.geocode({
             'address': address
@@ -112,12 +152,7 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
             if (status == google.maps.GeocoderStatus.OK) {
                 $scope.icon ;
                 $scope.latlng = results[0].geometry.location;
-                $scope.map = {
-                    center: {
-                        latitude: results[0].geometry.location.A,
-                        longitude: results[0].geometry.location.F
-                    }
-                };
+                setMapCenter(results[0].geometry.location.A, results[0].geometry.location.F, 8);
                 $scope.address = {
                     latitude: results[0].geometry.location.A,
                     longitude: results[0].geometry.location.F,

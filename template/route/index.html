@@ -1,11 +1,10 @@
- <div class="bg" id="map_canvas" >
+ <div class="bg" id="map_canvas">
      <ui-gmap-google-map 
         center="map.center" 
         zoom="map.zoom" 
         draggable="true" 
         options="options" 
         bounds="map.bounds"
-        style = 'height: 100%'
     >
         <ui-gmap-search-box template="searchbox.template" events="searchbox.events" position='RIGHT_TOP'>
         </ui-gmap-search-box>
@@ -17,10 +16,10 @@
     <!--<div ng-repeat="travel in travels">-->
         <div class="title">{{ travel.name }}</div>
         <ul class="nav nav-pills nav-stacked">
-            <li ng-repeat="location in locations" popover-template="'template/route/popover.html'" popover-placement="right">
+            <li ng-repeat="location in locations" ng-click="loadInformation(location)" popover-template="'template/route/popover.html'" popover-placement="right">
                 {{ location.name }}
                 <div class="pull-right">
-                    <span class="wi wi-day-lightning"></span>
+                    <span class="glyphicon glyphicon-menu-right"></span>
                 </div>
             </li>
             <script>
@@ -29,7 +28,7 @@
     <!--</div>-->
 </div>
 
-<div class="toolbar animate" ng-hide="createMode">
+<div class="toolbar animate" ng-hide="createMode || wait">
     <div ng-show="createType == 'start'" ng-click="createStart()" class="btn btn-block btn-danger">設定起點</div>
     <div ng-show="createType != 'start'" ng-click="createMidway()" class="btn btn-block btn-success">設定中繼點</div>
     <div ng-show="createType != 'start'" ng-click="createEnd()" class="btn btn-block btn-warning">設定終點</div>
@@ -44,7 +43,7 @@
             <textarea placeholder="{{ input_toolbar.body }}" ng-model="local.remark" class="form-control"></textarea>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">新增</button>
+            <button type="submit" class="btn btn-primary" ng-disabled="create_button_disable">新增</button>
             <a class="btn btn-link" ng-click="createMode=false">取消</a>
         </div>
     </form>
