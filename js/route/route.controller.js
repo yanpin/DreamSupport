@@ -108,20 +108,20 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
 
     $scope.createLocation = function(createLocal) {
         $scope.create_button_disable = true;
-        var local = {};
-        local.name = createLocal.name;
-        local.remark = createLocal.remark;
-        local.type = $scope.createType;
-        local.order = $scope.locations.length;
 
-        local.lat = $scope.latlng.A;
-        local.lng = $scope.latlng.F;
-        local.travel_id = $routeParams.travel_id;
-        delete local.$$hashKey;
+        createLocal.type = $scope.createType;
+        createLocal.order = $scope.locations.length;
 
-        Locations.post(local).then(function(response) {
-            $scope.locations.push(local);
-            $scope.createMode = false;
+        createLocal.lat = $scope.latlng.A;
+        createLocal.lng = $scope.latlng.F;
+        createLocal.travel_id = $routeParams.travel_id;
+        delete createLocal.$$hashKey;
+
+        Locations.post(createLocal).then(function(response) {
+            $scope.locations.push(createLocal);
+            $scope.createType = 'midway';
+            
+	    $scope.createMode = false;
             $scope.create_button_disable = false;
             createLocal = {};
             //address = {
