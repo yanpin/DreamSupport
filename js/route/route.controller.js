@@ -1,7 +1,7 @@
-app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routeParams) {
+app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routeParams, $location, $rootScope) {
 
     $scope.wait = true;
-
+    $scope.bounds = new google.maps.LatLngBounds();
     Travel.one($routeParams.travel_id).get().then(function (travel) {
         $scope.travel = travel;
         Locations.getList({travel_id: $routeParams.travel_id}).then(function (locations) {
@@ -29,6 +29,7 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                 if ($scope.locations.length != 0) {
                     $scope.createType = 'midway';
                 }
+                console.log($scope.randomMarkers)
                 $scope.randomMarkers.push($scope.address);
             }
         })
@@ -37,7 +38,8 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
     $scope.weathersIcon = {
         '多雲短暫陣雨': 'wi-hail',
         '晴時多雲': 'wi-day-cloudy',
-        '晴午後短暫雷陣雨': 'wi-day-rain-wind'
+        '晴午後短暫雷陣雨': 'wi-day-rain-wind',
+        '多雲午後短暫雷陣雨': 'wi-rain'
     };
     $scope.loadInformation = function (location) {
         $scope.search = true;
@@ -58,8 +60,15 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                 var time = new Date(weather.endTime);
                 weather.endTime = parseInt(time.getMonth() + 1) + '/' + time.getDate();
                 location.weathers[i] = weather;
+
             }
             location.hospitals = response.hospitals;
+            //for (var key in location.hospitals) {
+            //    var hospital = location.hospitals[key];
+            //    $scope.getLatLng(hospital.name);
+            //}
+
+
             $scope.search = false;
             setMapCenter(location.lat, location.lng, 10);
         });
@@ -96,8 +105,12 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
     }
 
     $scope.create_button_disable = false;
-    $scope.createLocation = function(local) {
+
+    $scope.createLocation = function(createLocal) {
         $scope.create_button_disable = true;
+        var local = {};
+        local.name = createLocal.name;
+        local.remark = createLocal.remark;
         local.type = $scope.createType;
         local.order = $scope.locations.length;
 
@@ -108,11 +121,27 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
 
         Locations.post(local).then(function(response) {
             $scope.locations.push(local);
-            $scope.createType = 'midway';
             $scope.createMode = false;
             $scope.create_button_disable = false;
+            createLocal = {};
+            //address = {
+            //    latitude: $scope.address.latitude,
+            //    longitude: $scope.address.longitude,
+            //    title: $scope.address.title,
+            //    id: $scope.address.id,
+            //    icon: $scope.address.icon
+            //}
+            if (response.type == 'end') {
+                $scope.createType = 'midway';
+                $rootScope.flash = {
+                    message: '恭喜你，已建立完整行程',
+                    count: 0
+                };
+                $location.path('/travel');
+            }
+            $scope.createType = 'midway';
         });
-
+        $scope.createType = 'midway';
     }
 
     $scope.randomMarkers = [];
@@ -122,45 +151,41 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
 
 
     var geocoder = new google.maps.Geocoder();
-    //基礎位置設定
-    //$scope.map = {
-    //    center: {
-    //        latitude: 23.60451,
-    //        longitude: 120.1010
-    //    }
-    //    zoom: 8,
-    //};
 
     var setMapCenter = function (lat, lng, zoom) {
-        $scope.map = {
-            center: {
-                latitude: lat,
-                longitude: lng
-            },
-            zoom: zoom,
-        };
+        if (zoom == -1) {
+            $scope.map = {
+                center: {
+                    latitude: lat,
+                    longitude: lng
+                }
+            };
+        } else {
+            $scope.map = {
+                center: {
+                    latitude: lat,
+                    longitude: lng
+                },
+                zoom: zoom,
+            };
+        }
     }
     setMapCenter(23.60451, 120.1010, 8);
 
 
     $scope.getLatLng = function(address) {
+        console.log(address);
         geocoder.geocode({
             'address': address
 
         }, function(results, status) {
 
             if (status == google.maps.GeocoderStatus.OK) {
-                $scope.icon ;
+                $scope.icon;
                 $scope.latlng = results[0].geometry.location;
-                setMapCenter(results[0].geometry.location.A, results[0].geometry.location.F, 8);
-                $scope.address = {
-                    latitude: results[0].geometry.location.A,
-                    longitude: results[0].geometry.location.F,
-                    title: address,
-                    id: 1,    
-                }
-                
-                if($scope.createType == 'start'){    
+                setMapCenter(results[0].geometry.location.A, results[0].geometry.location.F, -1);
+
+                if($scope.createType == 'start'){
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|S|E72323|FFFFFF'
                 } else if($scope.createType == 'midway'){
                     $scope.icon = 'https://chart.googleapis.com/chart?chst=d_map_xpin_letter&chld=pin|M|5cb85c|FFFFFF'
@@ -171,10 +196,10 @@ app.controller('RouteCtrl', function ($scope, $log, Travel, Locations, $routePar
                     latitude: results[0].geometry.location.A,
                     longitude: results[0].geometry.location.F,
                     title: address,
-                    id: 0, 
+                    id: $scope.locations.length,
                     icon: $scope.icon
-                }    
-                
+                }
+                console.log($scope.address)
                 $scope.randomMarkers.push($scope.address);
             } else {
                 console.log('Geocode was not successful for the following reason: ' + status);

@@ -13,7 +13,7 @@
             {{ weather.endTime }}
             {{ weather.parameter.parameterName }}
         </div>
-        <div class="p" ng-hide="location.weathers.length && !search">沒有該地區的天氣資訊</div>
+        <div class="p" ng-hide="location.weathers.length">沒有該地區的天氣資訊</div>
     </div>
     <div class="p" ng-show="location.popover.active == 'hospital'">
         <div class="p" ng-repeat="hospital in location.hospitals">
@@ -23,6 +23,6 @@
                 <li>地址：{{ hospital.address }}</li>
             </ul>
         </div>
-        <li ng-hide="location.hospitals.length && !search">附近沒有醫院</li>
+        <li ng-hide="location.hospitals.length">附近沒有醫院</li>
     </div>
 </div>
